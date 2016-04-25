@@ -1,6 +1,8 @@
 #include "stdafx.h"
 #include "main.h"
 
+/// TODO: Add array access check before each vector access
+
 /*
 Return codes:
 0 = all ok
