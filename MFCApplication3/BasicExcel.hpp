@@ -78,7 +78,6 @@
 
 #ifndef BASICEXCEL_HPP
 #define BASICEXCEL_HPP
-
 //MF
 #if defined(_MSC_VER) && _MSC_VER<=1200 // VC++ 6.0
 #pragma warning(disable: 4786)

@@ -9,8 +9,15 @@
 #define VC_EXTRALEAN            // Exclude rarely-used stuff from Windows headers
 #endif
 
+#define _WINSOCKAPI_
+#include "main.h"
 #include "targetver.h"
+#include "fileio.h"
+#include "LoggingData.h"
+#include "ExcelHandler.h"
 
+#undef _WINSOCKAPI_
+#undef _WINDOWS_
 #define _ATL_CSTRING_EXPLICIT_CONSTRUCTORS      // some CString constructors will be explicit
 
 // turns off MFC's hiding of some common and often safely ignored warning messages
@@ -18,6 +25,7 @@
 
 #include <afxwin.h>         // MFC core and standard components
 #include <afxext.h>         // MFC extensions
+
 
 
 

@@ -144,4 +144,16 @@ public:
 	CEdit numofFiles;
 	afx_msg void OnEnKillfocusnumfiles();
 	CEdit destinationPath;
+	CEdit sheetName1;
+	CEdit sheetName2;
+	CEdit sheetName3;
+	CEdit sheetName4;
+	CEdit sheetName5;
+	CEdit sheetName6;
+	CEdit sheetName7;
+	CEdit sheetName8;
+	CEdit sheetName9;
+	CEdit sheetName10;
+	CEdit sheetName11;
+	CEdit sheetName12;
 };

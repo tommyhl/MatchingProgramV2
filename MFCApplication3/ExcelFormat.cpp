@@ -13,7 +13,7 @@
 	OF SUCH TERMS AND CONDITIONS. IF YOU DO NOT AGREE TO ACCEPT AND BE BOUND BY THE TERMS OF THIS LICENSE,
 	YOU CANNOT MAKE ANY USE OF THE WORK.
 */
-
+#include "stdafx.h"
 #include "ExcelFormat.h"
 
 using namespace ExcelFormat;

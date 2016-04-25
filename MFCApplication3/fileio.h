@@ -1,10 +1,9 @@
 #pragma once
-
 #include <iostream>
 #include <fstream>
 #include <string>
 #include <stdlib.h>
-#include <Windows.h>
+//#include <Windows.h>
 
 
 class FileIO {

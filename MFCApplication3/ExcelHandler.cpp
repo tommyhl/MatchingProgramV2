@@ -1,6 +1,7 @@
+#include "stdafx.h"
 #include "ExcelHandler.h"
 
-\
+
 
 ExcelHandler::ExcelHandler()
 {

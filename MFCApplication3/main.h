@@ -1,6 +1,5 @@
 #pragma once
 #define _SCL_SECURE_NO_WARNINGS
-
 #include "fileio.h"
 #include "LoggingData.h"
 #include "ExcelHandler.h"
@@ -16,4 +15,4 @@
 void writeDatatoXLS(LoggingDataHolder*); // write Excel file
 void runMultithreaded(LoggingDataHolder*, LoggingDataHolder*, double*, int); // only matching
 void runMultithreadedCSV(LoggingDataHolder*, LoggingDataHolder*, double*, int); // matching and writing CSV file
-int runMatchingProgram(std::string, int, int, char, std::vector<int>);
+int runMatchingProgram(std::string[14], std::string[12], int[13], int[13], char, std::vector<int>[13]);

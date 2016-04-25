@@ -1,3 +1,4 @@
+#include "stdafx.h"
 #include "ExcelFormat.h"
 
 #ifdef _MSC_VER

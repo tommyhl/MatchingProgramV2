@@ -16,7 +16,6 @@
 
 #ifndef EXCELFORMAT_H
 #define EXCELFORMAT_H
-
 #include "BasicExcel.hpp"
 
 namespace ExcelFormat {

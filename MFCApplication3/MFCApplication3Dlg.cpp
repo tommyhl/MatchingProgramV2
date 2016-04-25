@@ -120,6 +120,19 @@ void CMFCApplication3Dlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, skipColumnsFile12, skipFile12);
 	DDX_Control(pDX, numFiles, numofFiles);
 	DDX_Control(pDX, destPath, destinationPath);
+	DDX_Control(pDX, sheetname1, sheetName1);
+	DDX_Control(pDX, sheetname2, sheetName2);
+	DDX_Control(pDX, sheetname3, sheetName3);
+	DDX_Control(pDX, sheetname4, sheetName4);
+	DDX_Control(pDX, sheetname5, sheetName5);
+	DDX_Control(pDX, sheetname6, sheetName6);
+	DDX_Control(pDX, sheetname7, sheetName7);
+	DDX_Control(pDX, sheetname8, sheetName8);
+	DDX_Control(pDX, sheetname9, sheetName9);
+	DDX_Control(pDX, sheetname10, sheetName10);
+	DDX_Control(pDX, sheetname11, sheetName11);
+	DDX_Control(pDX, sheetname12, sheetName12);
+
 }
 
 BEGIN_MESSAGE_MAP(CMFCApplication3Dlg, CDialogEx)
@@ -206,7 +219,18 @@ BOOL CMFCApplication3Dlg::OnInitDialog()
 	// TODO: Add extra initialization here
 	m_BtnClose.SetWindowTextW(L"Close");
 
-	
+	// Debug stuff
+	columnsFile0.SetWindowTextW(_T("13"));
+	matchFile0.SetWindowTextW(_T("1"));
+	typeFile0.SetWindowTextW(_T("date"));
+	columnsFile1.SetWindowTextW(_T("4"));
+	matchFile1.SetWindowTextW(_T("1"));
+	sheetName1.SetWindowTextW(_T("down1"));
+
+	pathToFile0.SetWindowTextW(_T("C:\\Software\\LoggingComparator\\TemperatureLog.CSV"));
+	pathToFile1.SetWindowTextW(_T("C:\\Software\\LoggingComparator\\down1.csv"));
+	destinationPath.SetWindowTextW(_T("C:\\Software\\merged.xls"));
+
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }
@@ -1675,7 +1699,7 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 
 	/// Add call to match program here
 
-	MessageBox(_T("Not yet implemented."), _T("Error"), MB_ICONERROR | MB_OK);
+	//MessageBox(_T("Not yet implemented."), _T("Error"), MB_ICONERROR | MB_OK);
 
 	CString getText = _T("");
 	numofFiles.GetWindowTextW(getText);
@@ -1704,6 +1728,7 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	int matchNo[13] = { 0 };
 	char matchtype;
 	std::vector<int> skipcolumns[13];
+	std::string names[12] = { "" };
 	
 	switch (numbofFiles) {
 	case 12:
@@ -1717,6 +1742,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 		matchNo[12] = std::stoi(tempString);
 		skipFile12.GetWindowTextW(getText);
 		tempString = CT2A(getText);
+		sheetName12.GetWindowTextW(getText);
+		names[11] = CT2A(getText);
 		tempString.erase(std::remove_if(tempString.begin(), tempString.end(), std::isspace), tempString.end());
 		splitStream.clear();
 		splitStream.str(tempString);
@@ -1727,6 +1754,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 11:
 		pathToFile11.GetWindowTextW(getText);
 		paths[11] = CT2A(getText);
+		sheetName11.GetWindowTextW(getText);
+		names[10] = CT2A(getText);
 		columnsFile11.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[11] = std::stoi(tempString);
@@ -1745,6 +1774,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 10:
 		pathToFile10.GetWindowTextW(getText);
 		paths[10] = CT2A(getText);
+		sheetName10.GetWindowTextW(getText);
+		names[9] = CT2A(getText);
 		columnsFile10.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[10] = std::stoi(tempString);
@@ -1763,6 +1794,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 9:
 		pathToFile9.GetWindowTextW(getText);
 		paths[9] = CT2A(getText);
+		sheetName9.GetWindowTextW(getText);
+		names[8] = CT2A(getText);
 		columnsFile9.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[9] = std::stoi(tempString);
@@ -1781,6 +1814,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 8:
 		pathToFile8.GetWindowTextW(getText);
 		paths[8] = CT2A(getText);
+		sheetName8.GetWindowTextW(getText);
+		names[7] = CT2A(getText);
 		columnsFile8.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[8] = std::stoi(tempString);
@@ -1799,6 +1834,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 7:
 		pathToFile7.GetWindowTextW(getText);
 		paths[7] = CT2A(getText);
+		sheetName7.GetWindowTextW(getText);
+		names[6] = CT2A(getText);
 		columnsFile7.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[7] = std::stoi(tempString);
@@ -1817,6 +1854,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 6:
 		pathToFile6.GetWindowTextW(getText);
 		paths[6] = CT2A(getText);
+		sheetName6.GetWindowTextW(getText);
+		names[5] = CT2A(getText);
 		columnsFile6.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[6] = std::stoi(tempString);
@@ -1835,6 +1874,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 5:
 		pathToFile5.GetWindowTextW(getText);
 		paths[5] = CT2A(getText);
+		sheetName5.GetWindowTextW(getText);
+		names[4] = CT2A(getText);
 		columnsFile5.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[5] = std::stoi(tempString);
@@ -1853,6 +1894,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 4:
 		pathToFile4.GetWindowTextW(getText);
 		paths[4] = CT2A(getText);
+		sheetName4.GetWindowTextW(getText);
+		names[3] = CT2A(getText);
 		columnsFile4.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[4] = std::stoi(tempString);
@@ -1871,6 +1914,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 3:
 		pathToFile3.GetWindowTextW(getText);
 		paths[3] = CT2A(getText);
+		sheetName3.GetWindowTextW(getText);
+		names[2] = CT2A(getText);
 		columnsFile3.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[3] = std::stoi(tempString);
@@ -1889,6 +1934,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	case 2:
 		pathToFile2.GetWindowTextW(getText);
 		paths[2] = CT2A(getText);
+		sheetName2.GetWindowTextW(getText);
+		names[1] = CT2A(getText);
 		columnsFile2.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[2] = std::stoi(tempString);
@@ -1906,7 +1953,9 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 			skipcolumns[2].push_back(std::stoi(splitString[i]));
 	case 1:
 		pathToFile1.GetWindowTextW(getText);
-		paths[1] = CT2A(getText);
+		paths[1] = CT2A(getText); 
+		sheetName1.GetWindowTextW(getText);
+		names[0] = CT2A(getText);
 		columnsFile1.GetWindowTextW(getText);
 		tempString = CT2A(getText);
 		noColumns[1] = std::stoi(tempString);
@@ -1951,7 +2000,8 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 		skipcolumns[0].push_back(std::stoi(splitString[i]));
 	destinationPath.GetWindowTextW(getText);
 	paths[13] = CT2A(getText);
-
 	
-	int returnValue = runMatchingProgram(paths, noColumns, matchNo, matchtype, skipcolumns);
+	
+	
+	runMatchingProgram(paths, names, noColumns, matchNo, matchtype, skipcolumns);
 }

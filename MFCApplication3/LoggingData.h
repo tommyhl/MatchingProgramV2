@@ -3,7 +3,6 @@
 #include <cmath>
 #include <time.h>
 #include "fileio.h"
-
 class configHolder {
 public:
 	configHolder() {  };
