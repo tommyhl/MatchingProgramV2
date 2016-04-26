@@ -113,6 +113,7 @@ int runMatchingProgram(std::string paths[14], std::string names[12], int noofCol
 		for (int l = 0; l < skipcolumns[i].size(); l++)
 			readData[i].config.columnDataType[skipcolumns[i][l]] = '~';
 		readData[i].config.columnDataType[readData[i].config.compColumn] = matchtype;
+	
 
 	}
 		//std::stringstream splitStream(temp);
@@ -163,68 +164,79 @@ int runMatchingProgram(std::string paths[14], std::string names[12], int noofCol
 			std::string temp2;
 			while (std::getline(splitStream, temp2, ';'))
 				splitString.push_back(temp2);
-			if (splitString.size() < 1)
-				break;
-			if (splitString[0] == "")
+			if (splitString.size() < 1 || splitString[0] == "")
 				break;
 			for (unsigned int n = 0; n < readData[i].config.columnDataType.size(); n++) {
-				if (n == readData[i].config.compColumn) {
-					switch (readData[i].config.columnDataType[n]) {  // i = integer, f = double (handles scientific notation), t = dd.mm.yyyy hh:mm:ss, d = dd.mm.yyyy, \t = hh:mm:ss, s = string, ~ = skip
-					case 'i':
-						if (splitString[n].size() < 1)
+				if (i < readData.size() && l < readData[i].data.size() && n < readData[i].config.columnDataType.size() && n < splitString.size())
+					if (n == readData[i].config.compColumn/* && /*Insert header check here l != 0*/) { 
+						switch (readData[i].config.columnDataType[n]) {  // i = integer, f = double (handles scientific notation), t = dd.mm.yyyy hh:mm:ss, d = dd.mm.yyyy, \t = hh:mm:ss, s = string, ~ = skip
+						case 'i':
+							if (splitString[n].size() < 1)
+								break;
+							std::istringstream(splitString[n]) >> readData[i].data[l].matchColumn;
 							break;
-						std::istringstream(splitString[n]) >> readData[i].data[l].matchColumn;
-						break;
-					case 'f':
-						if (splitString[n].size() < 1)
+						case 'f':
+							if (splitString[n].size() < 1)
+								break;
+							std::istringstream(splitString[n]) >> readData[i].data[l].matchColumn;
+							if (splitString[n][splitString[n].size() - 1] == 'k')
+								readData[i].data[l].matchColumn *= 1000;
+							if (splitString[n][splitString[n].size() - 1] == 'u')
+								readData[i].data[l].matchColumn *= 0.000001;
+							if (splitString[n][splitString[n].size() - 1] == 'm')
+								readData[i].data[l].matchColumn *= 0.001;
+							if (splitString[n][splitString[n].size() - 1] == 'M')
+								readData[i].data[l].matchColumn *= 1000000;
+							if (splitString[n][splitString[n].size() - 1] == 'G')
+								readData[i].data[l].matchColumn *= 1000000000;
+							if (splitString[n][splitString[n].size() - 1] == 'n')
+								readData[i].data[l].matchColumn *= 0.000000001;
 							break;
-						std::istringstream(splitString[n]) >> readData[i].data[l].matchColumn;
-						if (splitString[n][splitString[n].size() - 1] == 'k')
-							readData[i].data[l].matchColumn *= 1000;
-						if (splitString[n][splitString[n].size() - 1] == 'u')
-							readData[i].data[l].matchColumn *= 0.000001;
-						if (splitString[n][splitString[n].size() - 1] == 'm')
-							readData[i].data[l].matchColumn *= 0.001;
-						if (splitString[n][splitString[n].size() - 1] == 'M')
-							readData[i].data[l].matchColumn *= 1000000;
-						if (splitString[n][splitString[n].size() - 1] == 'G')
-							readData[i].data[l].matchColumn *= 1000000000;
-						if (splitString[n][splitString[n].size() - 1] == 'n')
-							readData[i].data[l].matchColumn *= 0.000000001;
-						break;
-					case 't':
-						if (splitString[n].size() < 1)
+						case 't':
+							if (splitString[n].size() < 1)
+								break;
+							if(splitString[n].size() >= 2)
+								readData[i].data[l].DateTime.tm_mday = (splitString[n][0] - '0') * 10 + (splitString[n][1] - '0');
+							if (splitString[n].size() >= 5)
+								readData[i].data[l].DateTime.tm_mon = ((splitString[n][3] - '0') * 10 + (splitString[n][4] - '0')) - 1;
+							if (splitString[n].size() >= 10)
+								readData[i].data[l].DateTime.tm_year = ((splitString[n][6] - '0') * 1000 + (splitString[n][7] - '0') * 100 + (splitString[n][8] - '0') * 10 + (splitString[n][9] - '0')) - 1900;
+							if (splitString[n].size() >= 13)
+								readData[i].data[l].DateTime.tm_hour = (splitString[n][11] - '0') * 10 + (splitString[n][12] - '0');
+							if (splitString[n].size() >= 16)
+								readData[i].data[l].DateTime.tm_min = (splitString[n][14] - '0') * 10 + (splitString[n][15] - '0');
+							if (splitString[n].size() >= 19)
+								readData[i].data[l].DateTime.tm_sec = (splitString[n][17] - '0') * 10 + (splitString[n][18] - '0');
 							break;
-						readData[i].data[l].DateTime.tm_mday = (splitString[n][0] - '0') * 10 + (splitString[n][1] - '0');
-						readData[i].data[l].DateTime.tm_mon = ((splitString[n][3] - '0') * 10 + (splitString[n][4] - '0')) - 1;
-						readData[i].data[l].DateTime.tm_year = ((splitString[n][6] - '0') * 1000 + (splitString[n][7] - '0') * 100 + (splitString[n][8] - '0') * 10 + (splitString[n][9] - '0')) - 1900;
-						readData[i].data[l].DateTime.tm_hour = (splitString[n][11] - '0') * 10 + (splitString[n][12] - '0');
-						readData[i].data[l].DateTime.tm_min = (splitString[n][14] - '0') * 10 + (splitString[n][15] - '0');
-						readData[i].data[l].DateTime.tm_sec = (splitString[n][17] - '0') * 10 + (splitString[n][18] - '0');
-						break;
-					case 'd':
-						if (splitString[n].size() < 10)
+						case 'd':
+							if (splitString[n].size() < 10)
+								break;
+							if (splitString[n].size() >= 2)
+								readData[i].data[l].DateTime.tm_mday = (splitString[n][0] - '0') * 10 + (splitString[n][1] - '0');
+							if (splitString[n].size() >= 5)
+								readData[i].data[l].DateTime.tm_mon = ((splitString[n][3] - '0') * 10 + (splitString[n][4] - '0')) - 1;
+							if (splitString[n].size() >= 10)
+								readData[i].data[l].DateTime.tm_year = ((splitString[n][6] - '0') * 1000 + (splitString[n][7] - '0') * 100 + (splitString[n][8] - '0') * 10 + (splitString[n][9] - '0')) - 1900;
 							break;
-						readData[i].data[l].DateTime.tm_mday = (splitString[n][0] - '0') * 10 + (splitString[n][1] - '0');
-						readData[i].data[l].DateTime.tm_mon = ((splitString[n][3] - '0') * 10 + (splitString[n][4] - '0')) - 1;
-						readData[i].data[l].DateTime.tm_year = ((splitString[n][6] - '0') * 1000 + (splitString[n][7] - '0') * 100 + (splitString[n][8] - '0') * 10 + (splitString[n][9] - '0')) - 1900;
-						break;
-					case '\t':
-						readData[i].data[l].DateTime.tm_hour = (splitString[n][0] - '0') * 10 + (splitString[n][1] - '0');
-						readData[i].data[l].DateTime.tm_min = (splitString[n][3] - '0') * 10 + (splitString[n][4] - '0');
-						readData[i].data[l].DateTime.tm_sec = (splitString[n][6] - '0') * 10 + (splitString[n][7] - '0');
-						break;
-					case 's':
+						case '\t':
+							if (splitString[n].size() >= 2)
+								readData[i].data[l].DateTime.tm_hour = (splitString[n][0] - '0') * 10 + (splitString[n][1] - '0');
+							if (splitString[n].size() >= 5)
+								readData[i].data[l].DateTime.tm_min = (splitString[n][3] - '0') * 10 + (splitString[n][4] - '0');
+							if (splitString[n].size() >= 8)
+								readData[i].data[l].DateTime.tm_sec = (splitString[n][6] - '0') * 10 + (splitString[n][7] - '0');
+							break;
+						case 's':
 
-						break;
-					case '~':
-						break;
+							break;
+						case '~':
+							break;
+						}
 					}
-				}
-				else {
-					if(readData[i].config.columnDataType[n] != '~')
-						readData[i].data[l].column.push_back(splitString[n]);
-				}
+					else {
+						if(readData[i].config.columnDataType[n] != '~')
+							readData[i].data[l].column.push_back(splitString[n]);
+					}
 			}
 			//if(readData[i].config.ID == 0) debug loading
 				//std::cout << 100 * (double)l / (double)227 << "%" << std::endl;
@@ -245,54 +257,59 @@ int runMatchingProgram(std::string paths[14], std::string names[12], int noofCol
 		}
 	}//*/
 
+	if (readData.size() > 2) {
 
-	
-	std::vector<std::thread*> threads;
-	std::vector<double> threadProgress;
+		std::vector<std::thread*> threads;
+		std::vector<double> threadProgress;
 
-	threads.resize(readData.size() - 1);
-	threadProgress.resize(threads.size());
+		threads.resize(readData.size() - 1);
+		threadProgress.resize(threads.size());
 
-	bool id0Passed = false;
-	for (unsigned int i = 0; i < threads.size(); i++) {
-		if (!id0Passed && readData[i].config.ID == 0) {
-			id0Passed = true;
-			i--;
-			continue;
-		}
-		if (WRITE_CSV) {
-			if (id0Passed)
-				threads[i] = new std::thread(runMultithreadedCSV, &readData[i + 1], &readData[id0Pos], &threadProgress[i], i);
-			else
-				threads[i] = new std::thread(runMultithreadedCSV, &readData[i], &readData[id0Pos], &threadProgress[i], i);
-		}
-		else {
-			if (id0Passed)
-				threads[i] = new std::thread(runMultithreaded, &readData[i + 1], &readData[id0Pos], &threadProgress[i], i);
-			else
-				threads[i] = new std::thread(runMultithreaded, &readData[i], &readData[id0Pos], &threadProgress[i], i);
-		}
-	}
-	
-	unsigned int joined = 0;
-	double matchProgress = 0.0;
-	// Use this to make progress bar stuff
-	while (joined < threads.size()) {
-		Sleep(1100);
-		//system("cls");
-		//std::cout << "Matching progress: " << matchProgress / threads.size() << "%" << std::endl;
-		matchProgress = 0.0;
+		bool id0Passed = false;
+
 		for (unsigned int i = 0; i < threads.size(); i++) {
-			matchProgress += threadProgress[i];
-			if (threads[i]) {
-				if (threads[i]->joinable() && threadProgress[i] > 98.0) {
-					threads[i]->join();
-					joined++;
-					threads[i] = nullptr;
-					delete threads[i];
+			if (!id0Passed && readData[i].config.ID == 0) {
+				id0Passed = true;
+				i--;
+				continue;
+			}
+			if (WRITE_CSV) {
+				if (id0Passed)
+					threads[i] = new std::thread(runMultithreadedCSV, &readData[i + 1], &readData[id0Pos], &threadProgress[i], i);
+				else
+					threads[i] = new std::thread(runMultithreadedCSV, &readData[i], &readData[id0Pos], &threadProgress[i], i);
+			}
+			else {
+				if (id0Passed)
+					threads[i] = new std::thread(runMultithreaded, &readData[i + 1], &readData[id0Pos], &threadProgress[i], i);
+				else
+					threads[i] = new std::thread(runMultithreaded, &readData[i], &readData[id0Pos], &threadProgress[i], i);
+			}
+		}
+
+		unsigned int joined = 0;
+		double matchProgress = 0.0;
+		// Use this to make progress bar stuff
+		while (joined < threads.size()) {
+			Sleep(1100);
+			//system("cls");
+			//std::cout << "Matching progress: " << matchProgress / threads.size() << "%" << std::endl;
+			matchProgress = 0.0;
+			for (unsigned int i = 0; i < threads.size(); i++) {
+				matchProgress += threadProgress[i];
+				if (threads[i]) {
+					if (threads[i]->joinable() && threadProgress[i] > 98.0) {
+						threads[i]->join();
+						joined++;
+						threads[i] = nullptr;
+						delete threads[i];
+					}
 				}
 			}
 		}
+	}
+	else {
+ 		runMultithreaded(&readData[1], &readData[0], nullptr, 0);
 	}
 
 	ExcelHandler excel;
@@ -318,9 +335,9 @@ int runMatchingProgram(std::string paths[14], std::string names[12], int noofCol
 			if (readData[n].data[i].DateTime.tm_sec < 10)
 				tempStream << "0";
 			tempStream << std::to_string(readData[n].data[i].DateTime.tm_sec);
-			excel.writeToCell(n, i, 0, tempStream.str(), 's');
+			excel.writeToCell(n-1, i, 0, tempStream.str(), 's');
 			for (int l = 0; l < readData[n].data[i].column.size(); l++) {
-				excel.writeToCell(n, i, l + 1, readData[n].data[i].column[l], 's');
+				excel.writeToCell(n-1, i, l + 1, readData[n].data[i].column[l], 's');
 			}
 			
 			tempStream.str(std::string());
@@ -339,9 +356,9 @@ int runMatchingProgram(std::string paths[14], std::string names[12], int noofCol
 				if (readData[n].data[i].matchedLog->DateTime.tm_sec < 10)
 					tempStream << "0";
 				tempStream << std::to_string(readData[n].data[i].matchedLog->DateTime.tm_sec);
-				excel.writeToCell(n, i, readData[n].data[i].column.size() + 1, tempStream.str(), 's');
+				excel.writeToCell(n-1, i, readData[n].data[i].column.size() + 1, tempStream.str(), 's');
 				for (int l = 0; l < readData[n].data[i].matchedLog->column.size(); l++) 
-					excel.writeToCell(n, i, l + 2 + readData[n].data[i].column.size(), readData[n].data[i].matchedLog->column[l], 's');
+					excel.writeToCell(n-1, i, l + 2 + readData[n].data[i].column.size(), readData[n].data[i].matchedLog->column[l], 's');
 				
 			}
 		}
@@ -388,10 +405,15 @@ void runMultithreadedCSV(LoggingDataHolder* readData, LoggingDataHolder* compDat
 }
 
 void runMultithreaded(LoggingDataHolder* readData, LoggingDataHolder* compData, double* threadProg, int threadNumber) {
-		
+	
+	
 	for (unsigned int l = 0; l < readData->data.size(); l++) { // loop through all rows in each data set
-		readData->data[l].matchedLog = &compData->data[(readData->data[l].match(compData->data, &compData->config, &readData->config))];
-
-		*threadProg = 100 * (double)l / (double)readData->data.size();
+		int testNum;
+		do {			
+			 testNum = readData->data[l].match(compData->data, &compData->config, &readData->config);
+		} while (testNum < 0 || testNum > compData->data.size());
+		readData->data[l].matchedLog = &compData->data[testNum];
+		if(threadProg != nullptr)
+			*threadProg = 100 * (double)l / (double)readData->data.size();
 	}
 }

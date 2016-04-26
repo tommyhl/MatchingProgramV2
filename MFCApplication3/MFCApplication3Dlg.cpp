@@ -225,10 +225,10 @@ BOOL CMFCApplication3Dlg::OnInitDialog()
 	typeFile0.SetWindowTextW(_T("date"));
 	columnsFile1.SetWindowTextW(_T("4"));
 	matchFile1.SetWindowTextW(_T("1"));
-	sheetName1.SetWindowTextW(_T("down1"));
+	sheetName1.SetWindowTextW(_T("down5"));
 
 	pathToFile0.SetWindowTextW(_T("C:\\Software\\LoggingComparator\\TemperatureLog.CSV"));
-	pathToFile1.SetWindowTextW(_T("C:\\Software\\LoggingComparator\\down1.csv"));
+	pathToFile1.SetWindowTextW(_T("C:\\Software\\LoggingComparator\\down5.csv"));
 	destinationPath.SetWindowTextW(_T("C:\\Software\\merged.xls"));
 
 
@@ -1985,9 +1985,9 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	matchNo[0] = std::stoi(tempString);
 	typeFile0.GetWindowTextW(getText);
 	tempString = CT2A(getText);
-	if (tempString == "Date" || "date")
-		matchtype = 'd';
-	if (tempString == "Number" || "number")
+	if (tempString == "Date" || tempString == "date")
+		matchtype = 't';
+	if (tempString == "Number" || tempString == "number")
 		matchtype = 'f';
 	skipFile0.GetWindowTextW(getText);
 	tempString = CT2A(getText);
@@ -1997,7 +1997,7 @@ void CMFCApplication3Dlg::OnBnClickedMatch()
 	while (std::getline(splitStream, temp, ','))
 		splitString.push_back(temp);
 	for (int i = 0; i < splitString.size(); i++)
-		skipcolumns[0].push_back(std::stoi(splitString[i]));
+		skipcolumns[0].push_back(std::stoi(splitString[i]) - 1);
 	destinationPath.GetWindowTextW(getText);
 	paths[13] = CT2A(getText);
 	
